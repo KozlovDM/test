@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <title>Главная</title>
+</head>
+<body>
+
+<form class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" id="Input">
+        <button type="button" class="btn btn-primary" id="noBD">Без БД</button>
+        <button type="button" class="btn btn-primary" id="setBD">Загрузить в БД</button>
+        <button type="button" class="btn btn-primary" id="BD">Использовать БД</button>
+    </div>
+</form>
+
+<div id="vac"></div>
+
+<script>
+
+    $('#noBD').on('click', function () {
+        $.ajax({
+            url: '/noBD',
+            success: function (result) {
+                $('#vac').html('');
+                document.getElementById("Input").value = "";
+                result.forEach(function (vacancy) {
+                    $('#vac').append(
+                        '<div>' +
+                        '<a href="' + vacancy.link + '">' + vacancy.headline + '</a>' +
+                        '<span>' + vacancy.salary + '</span><br>' +
+                        '<span>' + vacancy.employer + '</span><br>' +
+                        '<span>' + vacancy.location + '</span><br>' +
+                        '<span>' + vacancy.description + '</span><br>' +
+                        '<span>' + vacancy.date + '</span>' +
+                        '</div>');
+                })
+            }
+        })
+    });
+
+    $('#BD').on('click', function () {
+        $.ajax({
+            url: '/BD',
+            success: function (result) {
+                $('#vac').html('');
+                document.getElementById("Input").value = "";
+                result.forEach(function (vacancy) {
+                    $('#vac').append(
+                        '<div>' +
+                        '<a href="' + vacancy.link + '">' + vacancy.headline + '</a>' +
+                        '<span>' + vacancy.salary + '</span><br>' +
+                        '<span>' + vacancy.employer + '</span><br>' +
+                        '<span>' + vacancy.location + '</span><br>' +
+                        '<span>' + vacancy.description + '</span><br>' +
+                        '<span>' + vacancy.date + '</span>' +
+                        '</div>');
+                })
+            }
+        })
+    });
+
+    $('#setBD').on('click', function () {
+        $.ajax({
+            url: '/setBD',
+            success: function (result) {
+                $('#vac').html('');
+                document.getElementById("Input").value = "";
+                result.forEach(function (vacancy) {
+                    $('#vac').append(
+                        '<div>' +
+                        '<a href="' + vacancy.link + '">' + vacancy.headline + '</a>' +
+                        '<span>' + vacancy.salary + '</span><br>' +
+                        '<span>' + vacancy.employer + '</span><br>' +
+                        '<span>' + vacancy.location + '</span><br>' +
+                        '<span>' + vacancy.description + '</span><br>' +
+                        '<span>' + vacancy.date + '</span>' +
+                        '</div>');
+                })
+            }
+        })
+    });
+
+
+    $(document).ready(function () {
+        $('#Input').on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+
+            $('#vac div').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+
+</script>
+
+</body>
+</html>
